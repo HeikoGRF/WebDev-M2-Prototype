@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:frontend": "react-scripts start",
-    "start:backend": "cd src/backend && npm start",
+    "start:backend": "./venv/bin/python src/backend/main.py",
     "dev": "concurrently --raw \"npm run start:frontend\" \"npm run start:backend\"",
     "build": "react-scripts build",
     "test": "react-scripts test",

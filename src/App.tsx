@@ -6,6 +6,7 @@ import './App.css';
 interface EmbeddingData {
   text: string;
   vector: number[];
+  perplexity: number;
 }
 
 function App() {
@@ -31,7 +32,11 @@ function App() {
       }
 
       const data = await response.json();
-      setEmbeddings(prev => [...prev, { text, vector: data.embedding }]);
+      setEmbeddings(prev => [...prev, { 
+        text, 
+        vector: data.embedding,
+        perplexity: data.perplexity 
+      }]);
       setText(''); // Clear input after success
     } catch (error) {
       console.error('Error generating embedding:', error);
@@ -43,10 +48,10 @@ function App() {
 
   // Compute PCA coordinates
   const plotData = useMemo(() => {
-    if (embeddings.length === 0) return { x: [], y: [], text: [] };
+    if (embeddings.length === 0) return { x: [], y: [], text: [], hovertext: [], perplexities: [] };
 
     const vectors = embeddings.map(e => e.vector);
-    const texts = embeddings.map(e => e.text);
+    const perplexities = embeddings.map(e => e.perplexity);
 
     let x: number[] = [];
     let y: number[] = [];
@@ -73,7 +78,17 @@ function App() {
       }
     }
 
-    return { x, y, text: texts };
+    // Create labels with perplexity
+    const labels = embeddings.map(e => 
+      `${e.text} (PPL: ${e.perplexity.toFixed(1)})`
+    );
+
+    // Create hover text with more details
+    const hovertext = embeddings.map(e => 
+      `Text: ${e.text}<br>Perplexity: ${e.perplexity.toFixed(2)}`
+    );
+
+    return { x, y, text: labels, hovertext, perplexities };
   }, [embeddings]);
 
   return (
@@ -107,19 +122,30 @@ function App() {
                 x: plotData.x,
                 y: plotData.y,
                 text: plotData.text,
+                hovertext: plotData.hovertext,
+                hoverinfo: 'text',
                 mode: 'text+markers',
                 type: 'scatter',
                 textposition: 'top center',
-                marker: { size: 12, color: '#4a90e2' },
+                marker: { 
+                  size: 12, 
+                  color: plotData.perplexities,
+                  colorscale: 'Viridis',
+                  reversescale: true,
+                  showscale: true,
+                  colorbar: {
+                    title: { text: 'Perplexity', side: 'right' }
+                  }
+                },
               },
             ]}
             layout={{ 
               autosize: true, 
-              title: { text: 'Semantic Similarity (PCA Projection)' },
+              title: { text: 'Semantic Similarity (PCA Projection) with Perplexity' },
               hovermode: 'closest',
               xaxis: { title: { text: 'PC1' }, showgrid: true, zeroline: true },
               yaxis: { title: { text: 'PC2' }, showgrid: true, zeroline: true },
-              margin: { l: 50, r: 50, b: 50, t: 50 },
+              margin: { l: 50, r: 100, b: 50, t: 50 },
               paper_bgcolor: 'rgba(0,0,0,0)',
               plot_bgcolor: 'rgba(0,0,0,0)',
             }}
@@ -133,4 +159,3 @@ function App() {
 }
 
 export default App;
-
