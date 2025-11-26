@@ -1,0 +1,100 @@
+.App {
+  min-height: 100vh;
+  background-color: white;
+}
+
+.App-header {
+  background-color: white;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.App-header h1 {
+  margin: 0;
+  color: #000;
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.App-body {
+  padding: 20px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 800px;
+  margin: 0 auto 20px auto; /* Added margin-bottom */
+}
+
+.chart-container {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 180px); /* Fill remaining space approx */
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ... existing styles ... */
+
+.text-input {
+  flex: 1;
+  max-width: 600px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.text-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.add-embedding-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.add-embedding-button:hover {
+  background-color: #357abd;
+}
+
+.add-embedding-button:active {
+  background-color: #2a5f8f;
+}
+
+.add-embedding-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.embedding-result {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.embedding-result h3 {
+  margin-top: 0;
+  color: #333;
+}
+
